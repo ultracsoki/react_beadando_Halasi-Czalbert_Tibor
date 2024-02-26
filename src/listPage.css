@@ -1,0 +1,8 @@
+h1 {
+    horiz-align: center;
+}
+
+.categoryButtons {
+    display: inline-flex;
+    gap: 10px;
+}
