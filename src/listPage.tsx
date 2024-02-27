@@ -27,7 +27,7 @@ const ListPage: React.FC = () => {
     const [inputItem, setInputItem] = useState('');
     const [inputCategory, setInputCategory] = useState('');
     const [errorCode, setErrorCode] = useState('');
-    const [copyFilteredItems, setCopyFilteredItems] = useState(filteredItems);
+    const [filteredOneCategory, setFilteredOneCategory] = useState<Category>(categories[0]);
 
     function handleDelete(itemToDelete: Item)  {
         const newItems: Item[] = items.filter(item => item !== itemToDelete);
@@ -51,7 +51,6 @@ const ListPage: React.FC = () => {
                 items.push(item);
             }
             setFilteredItems(items);
-            setCopyFilteredItems(filteredItems);
             setErrorCode('Sikeres hozzáadás');
             setInputItem('');
             setInputCategory('');
@@ -66,12 +65,10 @@ const ListPage: React.FC = () => {
         const filtered: Item[] = items.filter(item => item.category === sortByCat);
         setFilteredItems(filtered);
         setInputText('');
-        setCopyFilteredItems(filtered);
     }
 
     function onSortByName(sortBy : string) {
-        setCopyFilteredItems(filteredItems);
-        const filteredByName: Item[] = copyFilteredItems.filter(item => item.name.toLowerCase().includes(sortBy.toLowerCase()));
+        const filteredByName: Item[] = items.filter(item => item.name.toLowerCase().includes(sortBy.toLowerCase()) && item.category === filteredOneCategory);
         setFilteredItems(filteredByName);
     }
 
@@ -86,7 +83,8 @@ const ListPage: React.FC = () => {
                         <button className="btn btn-dark bg-light-hover" onClick={() => {allItem();setInputText('')}}>All</button>
                         {
                             filteredCategories.map(cat => (
-                                <CategoryItem category={cat} onClick={() => onSortByCategory(cat)}/>))
+                                <CategoryItem category={cat} onClick={() => {onSortByCategory(cat);
+                                    setFilteredOneCategory(cat)}}/>))
                         }
                     </div>
                     <div className="input-group justify-content-center m-2">
