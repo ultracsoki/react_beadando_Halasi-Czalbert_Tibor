@@ -21,19 +21,18 @@ export let items: Item[] = [
 
 const ListPage: React.FC = () => {
     const [filteredCategories, setFilteredCategories] = useState<Category[]>(categories);
+    const [filteredOneCategory, setFilteredOneCategory] = useState<Category>(categories[0]);
     const [filteredItems, setFilteredItems] = useState<Item[]>(items);
-    const [inputText, setInputText] = useState<string>('');
     const [toggleForm, setToggleForm] = useState(false);
+    const [inputText, setInputText] = useState<string>('');
     const [inputItem, setInputItem] = useState('');
     const [inputCategory, setInputCategory] = useState('');
     const [errorCode, setErrorCode] = useState('');
-    const [filteredOneCategory, setFilteredOneCategory] = useState<Category>(categories[0]);
     const [selectAll, setSelectAll] = useState<boolean>(false);
 
     function handleDelete(itemToDelete: Item)  {
-        const newItems: Item[] = items.filter(item => item !== itemToDelete);
-        setFilteredItems(newItems);
-        items = newItems;
+        items = items.filter(item => item !== itemToDelete);
+        setFilteredItems(filteredItems.filter(item => item !== itemToDelete));
     }
 
     function addItem(itemName: string, categoryName: string){
