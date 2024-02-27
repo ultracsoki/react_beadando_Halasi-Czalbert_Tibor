@@ -28,6 +28,7 @@ const ListPage: React.FC = () => {
     const [inputCategory, setInputCategory] = useState('');
     const [errorCode, setErrorCode] = useState('');
     const [filteredOneCategory, setFilteredOneCategory] = useState<Category>(categories[0]);
+    const [selectAll, setSelectAll] = useState<boolean>(false);
 
     function handleDelete(itemToDelete: Item)  {
         const newItems: Item[] = items.filter(item => item !== itemToDelete);
@@ -67,8 +68,10 @@ const ListPage: React.FC = () => {
         setInputText('');
     }
 
-    function onSortByName(sortBy : string) {
-        const filteredByName: Item[] = items.filter(item => item.name.toLowerCase().includes(sortBy.toLowerCase()) && item.category === filteredOneCategory);
+    function onSortByName(sortBy: string) {
+        const filteredByName: Item[] = items.filter(item =>
+            item.name.toLowerCase().includes(sortBy.toLowerCase()) && (selectAll || item.category === filteredOneCategory)
+        );
         setFilteredItems(filteredByName);
     }
 
@@ -80,10 +83,10 @@ const ListPage: React.FC = () => {
                     <button className="btn btn-outline-success" onClick={() => {setToggleForm(true);setErrorCode('')}}>NEW</button>
                     <br/><br/>
                     <div className="categoryButtons">
-                        <button className="btn btn-dark bg-light-hover" onClick={() => {allItem();setInputText('')}}>All</button>
+                        <button className="btn btn-dark bg-light-hover" onClick={() => {setSelectAll(true);allItem();setInputText('')}}>All</button>
                         {
                             filteredCategories.map(cat => (
-                                <CategoryItem category={cat} onClick={() => {onSortByCategory(cat);
+                                <CategoryItem category={cat} onClick={() => {setSelectAll(false);onSortByCategory(cat);
                                     setFilteredOneCategory(cat)}}/>))
                         }
                     </div>
